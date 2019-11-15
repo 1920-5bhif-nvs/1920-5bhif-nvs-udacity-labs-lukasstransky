@@ -68,15 +68,15 @@ class GameFragment : Fragment() {
             binding.wordText.text = newWord
         })
 
+        viewModel.eventGameFinish.observe(this, Observer { hasFinished ->
+            if(hasFinished){
+                val action = GameFragmentDirections.actionGameToScore(viewModel.score.value ?: 0)
+                findNavController(this).navigate(action)
+                viewModel.onGameFinsihedComplete()
+            }
+        })
+
         return binding.root
 
-    }
-
-    /**
-     * Called when the game is finished
-     */
-    private fun gameFinished() {
-        val action = GameFragmentDirections.actionGameToScore(viewModel.score.value ?: 0)
-        findNavController(this).navigate(action)
     }
 }
