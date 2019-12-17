@@ -20,10 +20,10 @@ class OverviewViewModel : ViewModel() {
     val status: LiveData<String>
         get() = _status
 
-    private val _property = MutableLiveData<MarsProperty>()
+    private val _properties = MutableLiveData<List<MarsProperty>>()
 
-    val property: LiveData<MarsProperty>
-        get() = _property
+    val properties: LiveData<List<MarsProperty>>
+        get() = _properties
 
     // Create a Coroutine scope using a job to be able to cancel when needed
     private var viewModelJob = Job()
@@ -50,7 +50,7 @@ class OverviewViewModel : ViewModel() {
                 // Await the completion of our Retrofit request
                 var listResult = getPropertiesDeferred.await()
                 if (listResult.size > 0) {
-                    _property.value = listResult[0]
+                    _properties.value = listResult
                 }
             } catch (e: Exception) {
                 _status.value = "Failure: ${e.message}"
